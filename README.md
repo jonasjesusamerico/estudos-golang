@@ -211,3 +211,90 @@
                }
            ```
            * É possível que seja empilhada **`if-else`**, o último entrar será o primeiro a sair.
+
+* ### **MAIS TIPOS: STRUCTS, SLICE E MAPS**
+    * #### **PONTEIROS**
+        * Ponteiro guarda na memória o endereço de uma variável
+            * Ex: `var p *int`, o asterisco indica que ali se encontra um ponteiro, permite que seja alterado o valor diretamente no espaço de memória alocado
+            ```go
+                package main
+
+                import (
+                    "fmt"
+                )
+
+                type Conta struct {
+                    saldo float64
+                }
+
+                // passando (c *Conta), seria parecido com o set de outra linguagem
+                func (c *Conta) depositar(valor float64) {
+                    c.saldo += valor
+                }
+
+                func main() {
+                    contaTeste := Conta{saldo: 10}
+
+                    contaTeste.depositar(10)
+                    contaTeste.depositar(10)
+
+                    fmt.Println(contaTeste) // 30
+                }
+            ```
+    * #### **STRUCTS**        
+        * É uma coleção de campos
+        * Os campos são acesso através de ponto
+        * Possibilidade de ponteiro para structs
+            * Basta inicializa a structs e passa a referencia de memoria para outra variavel, sendo possivel agora altera o valor da estrutura através da nova variavel.
+        * **Structs literais**: Indica o valor de uma struct recém-alocado
+            * Possibilidade de construir as esturura passando o valor conforme a ordem os mesmo, ou então passando por intermedio do name, o nome que não for repassado, será inicializa com o valor default.
+    * ### **MATRIZES**
+        * Matrizes em GO não poderam ser redimencionado, uma vez declarado tamanho X permanecerá o tamanho.
+    * ### **SLICE**
+        * Slice é dinamicamente redimensionada. Por exemplo, se definirmos um slice de 10 posição, e você adicionar 11, essa slice será dobrada o tamanho e adionado a propriedade excedente ao tamanho
+        * Se você pegar elementos de determinada posição do slice e passar para outra variavel, e nessa nova variavel você altera o valor da propriedade recebida, será alterado o valor na referencia da memória de origem, ou seja, o slice antigo e o novo, sofrerão alteração.
+        * Permite buscar elementos de forma simplificada por posicao, basta passar `sliec[posicaoA:posicaoB]`
+        * O valor default de uma slice e `nill`
+        * Possivel também criar uma slice com o make: `a := make([]int, 5)`
+        * Para adicinar elemento a um slice, Go dispõe da funcão `append` : `slice = append(slice, 2, 3, 4)`
+    * ### **RANGE**
+        * Utilizado no laço for, esse range retorna 2 valores, o index e o elemento na posicao. Para ignorar o index basta utilizar-se do underline
+    * ### **MAPS**
+        * Mapeia chave para um valor
+        * Para construir um map, utiliza-se do make: `m = make(map[string]int)`
+        * Para inserir um elemento no map: `m[key] = elem`
+        * Para recuperar um elemento no map: `elem = m[key]`
+        * Para excluir elemento no map: `delete(m, key)`
+        * Map tem função de teste de se existe um elemto no map ou não: `elem, ok = m[key]`
+            * Se existir o elemento no map, o ok retornará true, do contrario será false
+    * ### **FUNÇÕES**
+        * É permitido passa funções por parametros, mas a função tem que conter o parametro do tipo func
+
+* ### **MÉTODOS E INTERFACES**
+    * Métodos em GO, são escrito de forma diferente
+    * Para que um metodo seja criado, e necessário passa um receptor especial, esse receptor fica entra o func e o nome da função, ex: 
+        ```go
+            package main
+
+            import (
+                "fmt"
+            )
+
+            type Pessoa struct {
+                Nome string
+            }
+
+            // (p Pessoa) é o receptor especial
+            func (p Pessoa) printNome() {
+                fmt.Println(p.Nome)
+            }
+
+            func main() {
+                p := Pessoa{Nome: "Teste"}
+                p.printNome()
+            }
+        ```
+
+
+
+* ### **CONCORRÊNCIA**
